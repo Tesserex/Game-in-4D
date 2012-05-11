@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Game4D
 {
-    public struct Cube4D
+    public class Cube4D : IPrimitive4D
     {
         private Quad4D top, bottom, left, right, front, back;
 
@@ -40,6 +40,7 @@ namespace Game4D
             var h1 = new Vector4(origin1.X + size1, origin1.Y + size1, origin1.Z + size1, 0);
             var h2 = new Vector4(origin2.X + size2, origin2.Y + size2, origin2.Z + size2, 1);
 
+            /*
             var rand = new Random();
             a1 *= (float)(rand.NextDouble() * 0.5 + 0.5);
             a2 *= (float)(rand.NextDouble() * 0.5 + 0.5);
@@ -57,6 +58,7 @@ namespace Game4D
             g2 *= (float)(rand.NextDouble() * 0.5 + 0.5);
             h1 *= (float)(rand.NextDouble() * 0.5 + 0.5);
             h2 *= (float)(rand.NextDouble() * 0.5 + 0.5);
+            */
 
             // faces
             back = new Quad4D(c1, c2, d1, d2, a1, a2, b1, b2);

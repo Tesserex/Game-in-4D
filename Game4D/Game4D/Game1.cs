@@ -39,12 +39,22 @@ namespace Game4D
 
         float w = 0;
 
-        Cube4D cube;
+        IPrimitive[] primitives = new IPrimitive[4];
+
         VertexDeclaration vertexDeclaration;
         Matrix View, Projection;
         protected override void Initialize()
         {
-            cube = new Cube4D(new Vector3(-1f, 0, 0), new Vector3(1f, 0, 0), 1, 0.75f);
+            primitives[0] = new Cube3D(new Vector3(-2, 1, -4), new Vector3(4, 2, 5));
+            primitives[1] = new Cube3D(new Vector3(-2, -1, -4), new Vector3(1, 2, 5));
+            primitives[2] = new Cube3D(new Vector3(1, -1, -4), new Vector3(1, 2, 5));
+
+            primitives[3] = new Quad4D(
+                new Vector4(-1, -1, 1, 0), new Vector4(-1, -1, -4, 1),
+                new Vector4(-1, 1, 1, 0), new Vector4(-1, 1, -4, 1),
+                new Vector4(1, -1, 1, 0), new Vector4(1, -1, -4, 1),
+                new Vector4(1, 1, 1, 0), new Vector4(1, 1, -4, 1)
+                );
 
             camera = new Vector3(0, 0, 5);
             View = Matrix.CreateLookAt(camera, Vector3.Zero,
@@ -120,12 +130,20 @@ namespace Game4D
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 w = Math.Min(w + 0.05f, 1);
-                cube.Project(w);
+
+                foreach (var cube in primitives.OfType<IPrimitive4D>())
+                {
+                    cube.Project(w);
+                }
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.O))
             {
                 w = Math.Max(w - 0.05f, 0);
-                cube.Project(w);
+
+                foreach (var cube in primitives.OfType<IPrimitive4D>())
+                {
+                    cube.Project(w);
+                }
             }
 #endif
 
@@ -148,7 +166,10 @@ namespace Game4D
             {
                 pass.Apply();
 
-                cube.Render(GraphicsDevice);
+                foreach (var cube in primitives)
+                {
+                    cube.Render(GraphicsDevice);
+                }
             }
 
             base.Draw(gameTime);
